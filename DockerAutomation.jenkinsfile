@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+    stages {
+        
+        stage('Pull Source Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/nithishkarthick/tasknew.git'
+            }
+        }
+        
+        stage('Copy to Container') {
+            steps {
+                script {
+                    def CONTAINER_NAME = "webapp"
+                    def CONTAINER_PATH = "/usr/local/apache2/htdocs"
+                    sh """
+                    docker cp index.html ${CONTAINER_NAME}:${CONTAINER_PATH}/index.html
+                 """
+                }
+            }
+        }
+    }
+}
